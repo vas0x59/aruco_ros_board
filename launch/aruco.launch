@@ -1,0 +1,7 @@
+<launch>
+    <remap from="image" to="/usb_cam/image_raw"/>
+    <remap from="camera_info" to="/usb_cam/camera_info"/>
+    <node name="aruco_board_ros" pkg="aruco_board_ros" type="test_ros_node" output="screen" >
+    
+    </node>
+</launch>
