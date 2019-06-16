@@ -1,7 +1,19 @@
 <launch>
     <remap from="image" to="/usb_cam/image_raw"/>
     <remap from="camera_info" to="/usb_cam/camera_info"/>
-    <node name="aruco_board_ros" pkg="aruco_board_ros" type="test_ros_node" output="screen" >
+
+    <arg name="markers_x" default="1"/>
+    <arg name="markers_y" default="1"/>
+    <arg name="markers_size" default="0.265"/>
+    <arg name="markers_sep" default="0.55"/>
+    <arg name="first_marker" default="0"/>
     
+
+    <node name="aruco_board_ros" pkg="aruco_board_ros" type="test_ros_node" output="screen" >
+        <param name="markers_x" type="int" value="$(arg markers_x)" />
+        <param name="markers_y" type="int" value="$(arg markers_y)"/>
+        <param name="markers_size" type="float" value="$(arg markers_size)"/>
+        <param name="markers_sep" type="float" value="$(arg markers_sep)"/>
+        <param name="first_marker" type="int" value="$(arg first_marker)"/>
     </node>
 </launch>

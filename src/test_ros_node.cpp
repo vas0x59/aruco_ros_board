@@ -20,7 +20,7 @@
 
 class ImageConverter
 {
-    ros::NodeHandle nh_;
+    ros::NodeHandle nh_("~");
     image_transport::ImageTransport it_;
     image_transport::Subscriber image_sub_;
     ros::Subscriber cinfo_sub;
@@ -33,23 +33,37 @@ class ImageConverter
     ros::Publisher point_pub;
     ros::Publisher pose_pub;
     bool has_camera_info_ = false;
-
+    int markers_x = 1;
+    int markers_y = 1;
+    float markers_size = 0.17;
+    float markers_sep = 0.06;
+    int first_marker = 0;
   public:
     ImageConverter()
         : it_(nh_)
     {
-        // Subscrive to input video feed and publish output video feed
+        // Subscrive to input  video feed and publish output video feed
+        nh_.param<int>("markers_x", markers_x, 1);
+        nh_.param<int>("markers_y", markers_y, 1);
+        nh_.param<float>("markers_size", markers_x, 0.17);
+        nh_.param<float>("markers_sep", markers_y, 0.06);
+        nh_.param<int>("first_marker", first_marker, 0);
+
+
         image_sub_ = it_.subscribe("image", 1,
                                    &ImageConverter::imageCb, this);
         image_pub_ = it_.advertise("/image_converter/output_video", 1);
         pose_pub = nh_.advertise<geometry_msgs::PoseStamped>("aruco/aruco_pose", 1);
         point_pub = nh_.advertise<geometry_msgs::Point>("aruco/aruco_point", 1);
-        dictionary_ = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_4X4_250);
-        board_ = board_gen(2, 1, 0.17, 0.06, dictionary_, 6);
+        dictionary_ = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_4X4_100);
+        board_ = board_gen(markers_x, markers_y, markers_size, markers_sep, dictionary_, first_marker);
         cameraMatrix = cv::Mat::zeros(3, 3, CV_64F);
         distCoeffs = cv::Mat::zeros(8, 1, CV_64F);
         R_flip_ = R_flip_gen(1, -1, -1);
         cinfo_sub = nh_.subscribe("camera_info", 1, &ImageConverter::cinfoCallback, this);
+        // this.
+        
+
         // load_cam(cameraMatrix, distCoeffs, "/home/vasily/Projects/opencv_cpp/logitech.yml"); // cv::namedWindow(OPENCV_WINDOW);
     }
 
