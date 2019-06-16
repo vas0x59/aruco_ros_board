@@ -38,7 +38,8 @@ class ImageConverter
     float markers_size = 0.17;
     float markers_sep = 0.06;
     int first_marker = 0;
-  public:
+
+public:
     ImageConverter()
         : it_(nh_)
     {
@@ -48,7 +49,6 @@ class ImageConverter
         nh_.param<float>("markers_size", markers_x, 0.17);
         nh_.param<float>("markers_sep", markers_y, 0.06);
         nh_.param<int>("first_marker", first_marker, 0);
-
 
         image_sub_ = it_.subscribe("image", 1,
                                    &ImageConverter::imageCb, this);
