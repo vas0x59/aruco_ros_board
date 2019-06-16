@@ -61,8 +61,6 @@ class ImageConverter
         distCoeffs = cv::Mat::zeros(8, 1, CV_64F);
         R_flip_ = R_flip_gen(1, -1, -1);
         cinfo_sub = nh_.subscribe("camera_info", 1, &ImageConverter::cinfoCallback, this);
-        // this.
-        
 
         // load_cam(cameraMatrix, distCoeffs, "/home/vasily/Projects/opencv_cpp/logitech.yml"); // cv::namedWindow(OPENCV_WINDOW);
     }
